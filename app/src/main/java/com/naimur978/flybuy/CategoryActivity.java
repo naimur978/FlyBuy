@@ -2,10 +2,14 @@ package com.naimur978.flybuy;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CategoryActivity extends AppCompatActivity {
 
@@ -21,9 +25,67 @@ public class CategoryActivity extends AppCompatActivity {
 
         String title = getIntent().getStringExtra("CategoryName");
         getSupportActionBar().setTitle(title);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //default back arrow
 
         categoryRecyclerView = findViewById(R.id.category_recycler_view);
+
+        //////////////////////////Banner Slider
+        List<SliderModel>sliderModelList = new ArrayList<SliderModel>();
+
+        sliderModelList.add(new SliderModel(R.mipmap.my_mall,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.mipmap.custom_error_icon,"#077AE4"));
+
+        //original
+        sliderModelList.add(new SliderModel(R.mipmap.green_email,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.mipmap.red_email,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.mipmap.banner_demo,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.mipmap.ic_launcher,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.mipmap.cart_white,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.mipmap.profile_placeholder,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.mipmap.my_mall,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.mipmap.custom_error_icon,"#077AE4"));
+        //original
+
+        sliderModelList.add(new SliderModel(R.mipmap.green_email,"#077AE4"));
+        sliderModelList.add(new SliderModel(R.mipmap.red_email,"#077AE4"));
+
+        ////////////////////////// Banner Slider
+
+        ////////////////////////// Horizontal Product Layout
+
+        List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.image_mobile,"Redmi 5A","SD 625 Processor","Tk. 11200/="));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.image_mobile,"Redmi 5A","SD 625 Processor","Tk. 11200/="));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.image_mobile,"Redmi 5A","SD 625 Processor","Tk. 11200/="));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.image_mobile,"Redmi 5A","SD 625 Processor","Tk. 11200/="));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.image_mobile,"Redmi 5A","SD 625 Processor","Tk. 11200/="));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.image_mobile,"Redmi 5A","SD 625 Processor","Tk. 11200/="));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.image_mobile,"Redmi 5A","SD 625 Processor","Tk. 11200/="));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.image_mobile,"Redmi 5A","SD 625 Processor","Tk. 11200/="));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.image_mobile,"Redmi 5A","SD 625 Processor","Tk. 11200/="));
+        horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.image_mobile,"Redmi 5A","SD 625 Processor","Tk. 11200/="));
+
+        ////////////////////////// Horizontal Product Layout
+
+        /////////////////////Recycler View 2nd
+
+        LinearLayoutManager testingLayoutManager = new LinearLayoutManager(this); //vertical scroll
+        testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        categoryRecyclerView.setLayoutManager(testingLayoutManager);
+
+        List<HomePageModel> homePageModelList = new ArrayList<>();
+        homePageModelList.add(new HomePageModel(0,sliderModelList));
+        homePageModelList.add(new HomePageModel(1,R.drawable.strip_add,"#000000"));
+        homePageModelList.add(new HomePageModel(2,"Deals of the day",horizontalProductScrollModelList));
+        homePageModelList.add(new HomePageModel(3,"Deals of the week",horizontalProductScrollModelList));
+        homePageModelList.add(new HomePageModel(0,sliderModelList));
+        homePageModelList.add(new HomePageModel(1,R.mipmap.banner_demo,"#0000FF"));
+        homePageModelList.add(new HomePageModel(0,sliderModelList));
+        homePageModelList.add(new HomePageModel(1,R.drawable.strip_add,"#FF0000"));
+
+        HomePageAdapter adapter = new HomePageAdapter(homePageModelList);
+        categoryRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -41,7 +103,9 @@ public class CategoryActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.main_search_icon) {
-
+            return true;
+        }else if(id == android.R.id.home){//for default back button
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -32,31 +31,7 @@ public class HomeFragment extends Fragment {
 
     private RecyclerView categoryRecyclerView;
     private CategoryAdapter categoryAdapter;
-
-
-    /////////////////////////// Banner Slider
-    private ViewPager bannerSliderViewPager;
-    private List<SliderModel> sliderModelList;
-    private int currentPage = 2;
-    private Timer timer;
-    final private long DELAY_TIME = 3000;
-    final private long PERIOD_TIME = 3000;
-
-    ///////////////////////////Banner Slider
-
-    ////////////////////Strip ad
-    private ImageView stripAdImage;
-    private ConstraintLayout stripAdContainer;
-
-    /////////////////////Strip ad
-
-
-    ////////////////////////// Horizontal Product Layout
-    private TextView horizontalLayoutTitle;
-    private Button horizontalLayoutViewAllBtn;
-    private RecyclerView horizontalRecyclerView;
-
-    ////////////////////////// Horizontal Product Layout
+    private RecyclerView testing;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,7 +41,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         categoryRecyclerView = view.findViewById(R.id.category_recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity()); //creating a linear layout
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity()); //creating a linear layout for scrolling horizontally
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         categoryRecyclerView.setLayoutManager(layoutManager);
 
@@ -89,8 +64,7 @@ public class HomeFragment extends Fragment {
 
 
         //////////////////////////Banner Slider
-        bannerSliderViewPager = view.findViewById(R.id.banner_slider_view_pager);
-        sliderModelList = new ArrayList<SliderModel>();
+        List<SliderModel>sliderModelList = new ArrayList<SliderModel>();
 
         sliderModelList.add(new SliderModel(R.mipmap.my_mall,"#077AE4"));
         sliderModelList.add(new SliderModel(R.mipmap.custom_error_icon,"#077AE4"));
@@ -109,66 +83,9 @@ public class HomeFragment extends Fragment {
         sliderModelList.add(new SliderModel(R.mipmap.green_email,"#077AE4"));
         sliderModelList.add(new SliderModel(R.mipmap.red_email,"#077AE4"));
 
-        SliderAdapter sliderAdapter = new SliderAdapter(sliderModelList);
-        bannerSliderViewPager.setAdapter(sliderAdapter);
-        bannerSliderViewPager.setClipToPadding(false);
-        bannerSliderViewPager.setPageMargin(20);
-
-        bannerSliderViewPager.setCurrentItem(currentPage);
-
-        ViewPager.OnPageChangeListener onPageChangeListener = new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                currentPage = i;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-                if(i == ViewPager.SCROLL_STATE_IDLE){
-                    pageLooper();
-                }
-            }
-        };
-        bannerSliderViewPager.addOnPageChangeListener(onPageChangeListener);
-
-        startBannerSlideshow();
-
-        bannerSliderViewPager.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                pageLooper();
-                stopBannerSlideshow();
-                if(event.getAction() == MotionEvent.ACTION_UP){
-                    startBannerSlideshow();
-                }
-                return false;
-            }
-        });
-
         ////////////////////////// Banner Slider
 
-
-        /////////////////////STRIP AD
-        stripAdImage = view.findViewById(R.id.strip_ad_image);
-        stripAdContainer = view.findViewById(R.id.strip_ad_container);
-
-        stripAdImage.setImageResource(R.drawable.strip_add);
-        stripAdContainer.setBackgroundColor(Color.parseColor("#000000"));
-        /////////////////////STRIP AD
-
-
         ////////////////////////// Horizontal Product Layout
-
-        horizontalLayoutTitle = view.findViewById(R.id.horizontal_scroll_layout_title);
-        horizontalLayoutViewAllBtn = view.findViewById(R.id.horizontal_scroll_view_all);
-        horizontalRecyclerView = view.findViewById(R.id.horizontal_scroll_layout_recycler_view);
-
-
 
         List<HorizontalProductScrollModel> horizontalProductScrollModelList = new ArrayList<>();
         horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.image_mobile,"Redmi 5A","SD 625 Processor","Tk. 11200/="));
@@ -182,34 +99,12 @@ public class HomeFragment extends Fragment {
         horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.image_mobile,"Redmi 5A","SD 625 Processor","Tk. 11200/="));
         horizontalProductScrollModelList.add(new HorizontalProductScrollModel(R.drawable.image_mobile,"Redmi 5A","SD 625 Processor","Tk. 11200/="));
 
-
-
-        HorizontalProductScrollAdapter horizontalProductScrollAdapter = new HorizontalProductScrollAdapter(horizontalProductScrollModelList);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext()); //creating a linear layout
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        horizontalRecyclerView.setLayoutManager(linearLayoutManager);
-        //getContext is for outside of the activity; getContext() vs getActivity()
-        horizontalRecyclerView.setAdapter(horizontalProductScrollAdapter);
-        horizontalProductScrollAdapter.notifyDataSetChanged();
-
         ////////////////////////// Horizontal Product Layout
-
-
-        ////////////////////////// Grid Product Layout
-        TextView gridLayoutTitle = view.findViewById(R.id.grid_product_layout_title);
-        Button gridLayoutViewAllBtn = view.findViewById(R.id.grid_product_layout_view_all_btn);
-        GridView gridView = view.findViewById(R.id.grid_product_layout_grid_view);
-
-        gridView.setAdapter(new GridProductLayoutAdapter(horizontalProductScrollModelList));
-
-        ////////////////////////// Grid Product Layout
-
-
 
         /////////////////////Recycler View 2nd
 
-        RecyclerView testing = view.findViewById(R.id.testing);
-        LinearLayoutManager testingLayoutManager = new LinearLayoutManager(getContext());
+        testing = view.findViewById(R.id.home_page_recycler_view);
+        LinearLayoutManager testingLayoutManager = new LinearLayoutManager(getContext()); //vertical scroll
         testingLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         testing.setLayoutManager(testingLayoutManager);
 
@@ -228,70 +123,6 @@ public class HomeFragment extends Fragment {
         adapter.notifyDataSetChanged();
 
         /////////////////////Recycler View 2nd
-
         return view;
     }
-
-    ///////////////////Banner Slider
-    private void pageLooper(){
-        if(currentPage == sliderModelList.size() - 2){
-            currentPage =2;
-            bannerSliderViewPager.setCurrentItem(currentPage,false);
-        }
-
-        if(currentPage == 1){
-            currentPage = sliderModelList.size() - 3;
-            bannerSliderViewPager.setCurrentItem(currentPage,false);
-        }
-    }
-
-    private void startBannerSlideshow(){
-        final Handler handler = new Handler();
-        final Runnable update = new Runnable() {
-            @Override
-            public void run() {
-                if(currentPage >= sliderModelList.size()){
-                    currentPage = 1;
-                }
-
-                bannerSliderViewPager.setCurrentItem(currentPage++,true);
-            }
-        };
-
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(update);
-            }
-        }
-        ,DELAY_TIME,PERIOD_TIME
-        );
-    }
-
-    private void stopBannerSlideshow(){
-        timer.cancel();
-    }
-
-
-    //////////////////// Banner Slider
-
-
-    /////////////////////STRIP AD
-
-
-
-    /////////////////////STRIP AD
-
-    ////////////////////////// Horizontal Product Layout
-
-
-    ////////////////////////// Horizontal Product Layout
-
-    ////////////////////////// Grid Product Layout
-
-
-
-    ////////////////////////// Grid Product Layout
-
 }
